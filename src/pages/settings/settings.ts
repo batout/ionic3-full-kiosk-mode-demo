@@ -10,6 +10,8 @@ import { Settings } from '../../providers/providers';
  * to enable the user to customize settings for the app.
  *
  */
+declare var KioskPlugin;
+
 @IonicPage()
 @Component({
   selector: 'page-settings',
@@ -18,6 +20,7 @@ import { Settings } from '../../providers/providers';
 export class SettingsPage {
   // Our local settings object
   options: any;
+  
 
   settingsReady = false;
 
@@ -91,5 +94,9 @@ export class SettingsPage {
 
   ngOnChanges() {
     console.log('Ng All Changes');
+  }
+
+  exit(){
+    KioskPlugin.exitKiosk();
   }
 }

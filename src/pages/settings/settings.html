@@ -32,6 +32,10 @@
       <button ion-item [navPush]="subSettings" [navParams]="profileSettings">
         {{ 'SETTINGS_PROFILE_BUTTON' | translate }}
       </button>
+
+      <ion-item >
+        <button ion-button block (click)='exit()' >exit</button>
+      </ion-item>
     </ion-list>
 
     <ion-list *ngIf="page == 'profile'">
