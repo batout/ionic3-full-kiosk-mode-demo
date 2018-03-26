@@ -7,6 +7,10 @@ import { Config, Nav, Platform } from 'ionic-angular';
 import { FirstRunPage } from '../pages/pages';
 import { Settings } from '../providers/providers';
 
+import { AndroidFullScreen } from '@ionic-native/android-full-screen';
+
+declare var unswipableAndroidStatusBarPlugin;
+
 @Component({
   template: `<ion-menu [content]="content">
     <ion-header>
@@ -24,7 +28,8 @@ import { Settings } from '../providers/providers';
     </ion-content>
 
   </ion-menu>
-  <ion-nav #content [root]="rootPage"></ion-nav>`
+  <ion-nav #content [root]="rootPage"></ion-nav>`,
+  providers:[AndroidFullScreen]
 })
 export class MyApp {
   rootPage = FirstRunPage;
@@ -45,12 +50,25 @@ export class MyApp {
     { title: 'Search', component: 'SearchPage' }
   ]
 
-  constructor(private translate: TranslateService, platform: Platform, settings: Settings, private config: Config, private statusBar: StatusBar, private splashScreen: SplashScreen) {
+  constructor(private translate: TranslateService,
+    platform: Platform,
+    settings: Settings,
+    private config: Config,
+    private statusBar: StatusBar,
+    private splashScreen: SplashScreen,
+    private _AndroidFullScreen: AndroidFullScreen
+  ) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
+      this.statusBar.hide();
+      this._AndroidFullScreen.immersiveMode();
       this.splashScreen.hide();
+      unswipableAndroidStatusBarPlugin.prevent();
+      platform.registerBackButtonAction((event) => {
+        event.preventDefault();
+    }, 100);
     });
     this.initTranslate();
   }
